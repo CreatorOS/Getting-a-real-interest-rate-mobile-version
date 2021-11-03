@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "defaultFile": "contracts/Bank.sol",
+  "environment": "solidity",
+  "setupCommands": ["npm i", "npx hardhat compile"],
+  "compileCommand": "npx hardhat compile",
+  "tests": [
+    { "itShould": "Compile", "command": "sh learn_tests/01.sh" },
+    { "itShould": "Deposit without state", "command": "sh learn_tests/02.sh" },
+    { "itShould": "Deposit with state", "command": "sh learn_tests/03.sh" },
+    { "itShould": "Withdraw", "command": "sh learn_tests/04.sh" }
+  ],
+  "learnerAccessibleFileList": ["contracts/*"]
+}
