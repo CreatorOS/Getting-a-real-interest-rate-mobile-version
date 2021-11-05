@@ -29,35 +29,50 @@ contract SmartBankAccount {
     }
     
     mapping(address => uint) balances;
+    mapping(address => uint) depositTimestamps;
     
     function addBalance() public payable {
-        balances[msg.sender] = msg.value;
+        uint256 cEthOfContractBeforeMinting = ceth.balanceOf(address(this)); //this refers to the current contract
+
         
+        // send ethers to mint()
+        ceth.mint{value: msg.value}();
+
+        uint256 cEthOfContractAfterMinting = ceth.balanceOf(address(this)); // updated balance after minting
+        uint cEthOfUser = cEthOfContractAfterMinting - cEthOfContractBeforeMinting; // the difference is the amount that has been created by the mint() function
+
+        balances[msg.sender] = cEthOfUser;
+        
+
         
     }
     
     function getBalance(address userAddress) public view returns(uint256) {
-        // write logic to get balance of userAddress
-        
+        uint balance = balances[userAddress] * ceth.exchangeRateStored() / 1e18;
+        console.log('Balance: ', balance);
+        return balance;
     }
     
     function withdraw() public payable {
-
+        
         address payable withdrawTo = payable(msg.sender);
         uint amountToTransfer = getBalance(msg.sender);
         
-        // write redeem logic here
+        ceth.redeem(balances[msg.sender]);
        
         balances[msg.sender] = 0;
 
         withdrawTo.transfer(amountToTransfer);
-        
     }
     
     function addMoneyToContract() public payable {
         
     }
 
+    receive() external payable {
+
+    }   
     
 }
+
 
