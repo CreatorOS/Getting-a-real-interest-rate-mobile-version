@@ -23,6 +23,7 @@ module.exports = {
     hardhat: {
       forking: {
         url: `https://aged-divine-brook.quiknode.pro/${process.env.QUICKNODE_KEY}/`,
+        blockNumber: 13517905,
       },
     },
   },
